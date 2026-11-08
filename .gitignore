@@ -1,0 +1,14 @@
+/_build/
+/cover/
+/deps/
+/doc/
+/.fetch
+erl_crash.dump
+*.ez
+graphyne-*.tar
+/tmp/
+.elixir_ls/
+.tool-versions
+
+# leex and yecc output
+/src/*.erl
