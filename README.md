@@ -59,9 +59,9 @@ counts as not given.
 
 | Body | Result |
 |---|---|
-| `data`, no `errors` | `{:ok, data}` |
+| an object in `data`, no `errors` | `{:ok, data}` |
 | a non-empty `errors` list | `{:error, %Graphyne.Error{errors: errors, data: data_or_nil}}` |
-| anything else | `{:error, body}` |
+| anything else, `"data": null` without `errors` too | `{:error, body}` |
 
 A partial result is an error that keeps its `data`. Use the helpers to
 match error codes:

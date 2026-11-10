@@ -115,6 +115,12 @@ defmodule GraphyneTest do
       assert {:error, %Error{data: nil}} = Graphyne.result(%{"errors" => [%{"message" => "Denied"}]})
     end
 
+    test "returns a null or non-object data without errors as an error" do
+      assert {:error, %{"data" => nil}} = Graphyne.result(%{"data" => nil})
+      assert {:error, %{"data" => nil, "errors" => []}} = Graphyne.result(%{"data" => nil, "errors" => []})
+      assert {:error, %{"data" => "ok"}} = Graphyne.result(%{"data" => "ok"})
+    end
+
     test "returns a body that is not a GraphQL response" do
       assert {:error, "Bad gateway"} = Graphyne.result("Bad gateway")
       assert {:error, %{"error" => "invalid_token"}} = Graphyne.result(%{"error" => "invalid_token"})

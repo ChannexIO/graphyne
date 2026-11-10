@@ -97,11 +97,12 @@ defmodule Graphyne do
 
   @doc """
   Reads a decoded response body. A non-empty `errors` list gives a
-  `Graphyne.Error` that keeps the partial `data`. A body that is not a
-  GraphQL response comes back as `{:error, body}`.
+  `Graphyne.Error` that keeps the partial `data`. Any other body without an
+  object in `data` comes back as `{:error, body}`: the spec requires errors
+  with a null data, see https://spec.graphql.org/October2021/#sec-Data
   """
-  @spec result(term()) :: {:ok, map() | nil} | {:error, Error.t()} | {:error, term()}
+  @spec result(term()) :: {:ok, map()} | {:error, Error.t()} | {:error, term()}
   def result(%{"errors" => [_ | _] = errors} = body), do: {:error, %Error{errors: errors, data: body["data"]}}
-  def result(%{"data" => data}), do: {:ok, data}
+  def result(%{"data" => data}) when is_map(data), do: {:ok, data}
   def result(body), do: {:error, body}
 end
